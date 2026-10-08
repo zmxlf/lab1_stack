@@ -1,5 +1,6 @@
 LOGIN alice
-
-HELLO world
+BEGIN
+LOGIN bob
+LOGOUT bob
+ROLLBACK
 LOGOUT alice
-LOGIN

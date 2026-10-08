@@ -1,3 +1,1 @@
-ERROR 3 bad_event
-ERROR 5 bad_event
-SESSIONS 1 
+SESSIONS 2 
