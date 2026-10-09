@@ -1,20 +1,13 @@
-# артефакты сборки и запуска
-.idea
-.check_tmp/
-*.produced
-solution
-*.o
-*.obj
-*.exe
-__pycache__/
-*.pyc
+# сначала игнорируем вообще всё
+*
 
-# решение студента (создаётся локально, не коммитится в шаблон)
-solution.json
+# но разрешаем папки, чтобы git мог заглянуть внутрь
+!*/
 
-# ПРИВАТНОЕ преподавателя — никогда не коммитить в публичный репозиторий:
-reference.*
-main.cpp
-*_reference.*
-tests/hidden/
-TEACHER.md
+# и разрешаем конкретные файлы
+!a.py
+!bench.py
+!bench_worst.py
+!input.txt
+!output.txt
+!.gitignore
