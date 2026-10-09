@@ -26,6 +26,8 @@ def main():
     stroka = 0
 
     stroki_stacks={}
+    active={}
+    per_user = "--per-user" in sys.argv
 
     if len(sys.argv) < 3:
             print("Ошибка: Укажите входной или выходной файлы")
@@ -67,19 +69,27 @@ def main():
                         znach = line[probel+1:]
                         norm_stroka+=1
                         if commond=="LOGIN":
-                            stack.push(znach)
+                            if per_user:
+                                active[znach] = active.get(znach, 0) + 1
+                            else:
+                                stack.push(znach)
                             stroki_stacks[znach] = stroka
                         if commond=="LOGOUT":
-                            
-                            if stack.is_empty():
-                                outfile.write(f"ERROR {stroka} logout_without_login\n")
-                            else:
-                                if stack.top()!=znach:
-                                    outfile.write(f"ERROR {stroka} order_violation\n")
+                            if per_user:
+                                if active.get(znach, 0) == 0:
+                                    outfile.write(f"ERROR {stroka} logout_without_login\n")
                                 else:
-                                    
-                                    stack.pop()
-                                    sessions+=1
+                                    active[znach] -= 1
+                                    sessions += 1
+                            else:
+                                if stack.is_empty():
+                                    outfile.write(f"ERROR {stroka} logout_without_login\n")
+                                else:
+                                    if stack.top()!=znach:
+                                        outfile.write(f"ERROR {stroka} order_violation\n")
+                                    else:
+                                        stack.pop()
+                                        sessions+=1
                     
                     
                     
@@ -117,13 +127,16 @@ def main():
             outfile.write(f"ERROR {stroka_begin} transaction_not_closed\n")
                         
         
-            
-        if stack.is_empty()==0:
-            for i in stack.data:
-                                    
-                        if i in stroki_stacks:
-                            
-                            outfile.write(f"ERROR {stroki_stacks[i]} session_not_closed\n")
+        if per_user:
+            for name, cnt in active.items():
+                for _ in range(cnt):
+                    if name in stroki_stacks:
+                        outfile.write(f"ERROR {stroki_stacks[name]} session_not_closed\n")
+        else:
+            if stack.is_empty()==0:
+                for i in stack.data:
+                    if i in stroki_stacks:
+                        outfile.write(f"ERROR {stroki_stacks[i]} session_not_closed\n")
         outfile.write(f"SESSIONS {sessions} \n")
 
 if __name__ == '__main__':
