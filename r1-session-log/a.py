@@ -34,9 +34,9 @@ def main():
             return
     input_file = sys.argv[1]    
     output_file = sys.argv[2]
-    # input_file = "input.txt"     
+    # input_file = "/home/svarog/vscode_projects/bmstu/stack/asd-labs-public-main/r1-session-log/tests/robustness/binary_junk.in"     
     # output_file = "output.txt" 
-    with  open(input_file, 'r', encoding="utf-8") as infile, open(output_file, "w", encoding="utf-8") as outfile:
+    with  open(input_file, 'r', encoding="utf-8", errors="replace") as infile, open(output_file, "w", encoding="utf-8") as outfile:
         lines = infile.readlines()
         
         check_begin=0    
